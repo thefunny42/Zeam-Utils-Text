@@ -1,0 +1,6 @@
+[submodule "devel/zeam.form.base"]
+	path = devel/zeam.form.base
+	url = git@github.com:thefunny42/Zeam-Form.git
+[submodule "devel/zeam.form.ztk"]
+	path = devel/zeam.form.ztk
+	url = git@github.com:thefunny42/Zeam-Form-ZTK.git
