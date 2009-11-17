@@ -4,4 +4,7 @@
   <include package="zeam.form.base" />
   <include package="zeam.form.ztk" />
 
+  <!-- Grok this package -->
+  <grok:grok package="." />
+
 </configure>

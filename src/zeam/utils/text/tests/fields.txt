@@ -2,5 +2,65 @@
 zeam.utils.text
 ===============
 
-  >>> 1 + 1
-  2
+This package define a new zope.schema field: Advanced Text:
+
+  >>> from zope import interface
+  >>> from zeam.utils.text import AdvancedText
+
+  >>> class IComment(interface.Interface):
+  ...     text = AdvancedText(title=u"Comment")
+
+A value of this field is implemented by a Text object:
+
+  >>> from zeam.utils.text import Text
+  >>> IComment['text'].validate(Text())
+  >>> IComment['text'].validate('test')
+  Traceback (most recent call last):
+    ...
+  InvalidValue: Not text
+
+
+And we can create a content with some data:
+
+  >>> from zope.publisher.browser import TestRequest
+  >>> request = TestRequest()
+
+  >>> class Comment(object):
+  ...    interface.implements(IComment)
+  ...    text = Text()
+
+  >>> content = Comment()
+
+
+Field
+-----
+
+From that zope.schema field, you can get a field for your form:
+
+  >>> from zeam.form.ztk import Fields
+
+  >>> commentFields = Fields(IComment)
+  >>> commentField = commentFields['text']
+  >>> commentField
+  <AdvancedTextSchemaField Comment>
+
+
+Widget
+------
+
+You have an associated widget:
+
+  >>> from zeam.form.ztk import Widgets, FormSubmission
+
+  >>> sub = FormSubmission(content, request)
+  >>> sub.ignoreContent = False
+
+  >>> commentWidgets = Widgets(commentFields, form=sub, request=request)
+  >>> commentWidgets.update()
+
+  >>> commmentWidget = commentWidgets['form.field.text']
+  >>> commmentWidget
+  <AdvancedTextFieldWidget Comment>
+
+
+

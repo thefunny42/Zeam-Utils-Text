@@ -23,6 +23,6 @@ class AdvancedTextFieldWidget(FieldWidget):
 
 
 class AdvancedTextWidgetExtractor(WidgetExtractor):
-    grok.adapts(AdvancedSchemaField, Interface, Interface)
+    grok.adapts(AdvancedTextSchemaField, Interface, Interface)
 
 

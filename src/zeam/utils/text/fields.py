@@ -20,6 +20,6 @@ class AdvancedText(schema.Field):
 
     def validate(self, obj):
         if not isinstance(obj, Text):
-            raise InvalidValue
+            raise InvalidValue('Not text')
 
 
