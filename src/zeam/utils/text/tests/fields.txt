@@ -19,7 +19,6 @@ A value of this field is implemented by a Text object:
     ...
   InvalidValue: Not text
 
-
 And we can create a content with some data:
 
   >>> from zope.publisher.browser import TestRequest
@@ -44,6 +43,14 @@ From that zope.schema field, you can get a field for your form:
   >>> commentField
   <AdvancedTextSchemaField Comment>
 
+From the field you can get a list of available formats:
+
+  >>> formats = commentField.availableFormat()
+  >>> formats
+  <zope.schema.vocabulary.SimpleVocabulary object at ...>
+  >>> [(f.title, f.value) for f in formats]
+  [(u'Raw', u'raw'), (u'Re-structured text', u'rest')]
+
 
 Widget
 ------
@@ -58,9 +65,10 @@ You have an associated widget:
   >>> commentWidgets = Widgets(commentFields, form=sub, request=request)
   >>> commentWidgets.update()
 
-  >>> commmentWidget = commentWidgets['form.field.text']
-  >>> commmentWidget
+  >>> commentWidget = commentWidgets['form.field.text']
+  >>> commentWidget
   <AdvancedTextFieldWidget Comment>
 
-
-
+  >>> print commentWidget.render()
+  <textarea id="form-field-text" name="form.field.text"
+            cols="80" rows="5">None</textarea>

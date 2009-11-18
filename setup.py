@@ -29,5 +29,6 @@ setup(name='zeam.utils.text',
           'setuptools',
           'zeam.form.base',
           'zeam.form.ztk',
+          'docutils',
           ],
       )
