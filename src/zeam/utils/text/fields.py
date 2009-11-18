@@ -22,8 +22,8 @@ class Text(object):
             return self.__raw
         def set(self, value):
             renderer = component.getUtility(ITextFormat, name=self.format)
-            self.__text = renderer.render(raw)
-            self.__raw = raw
+            self.__text = renderer.render(value)
+            self.__raw = value
         return property(get, set)
 
     @property

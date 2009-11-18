@@ -1,4 +1,5 @@
 
+from docutils.core import publish_parts
 from grokcore import component as grok
 from zope import component
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
@@ -47,4 +48,5 @@ class RestFormat(TextFormat):
     title = u'Re-structured text'
 
     def render(self, data):
-        return ''
+        return publish_parts(
+            data, parser_name='restructuredtext', writer_name='html')['body']

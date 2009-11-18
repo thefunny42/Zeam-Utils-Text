@@ -11,7 +11,7 @@ def test_suite():
     globs= {'grok_component': grok_component}
 
     suite = unittest.TestSuite()
-    for filename in ['fields.txt',]:
+    for filename in ['text.txt', 'widgets.txt',]:
         test = doctest.DocFileSuite(
             filename,
             optionflags=optionflags,

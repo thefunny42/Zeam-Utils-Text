@@ -1,0 +1,81 @@
+===============
+zeam.utils.text
+===============
+
+You can store some text in a Text object:
+
+  >>> from zeam.utils.text import Text
+
+  >>> my_text = Text()
+
+  >>> from zeam.utils.text import interfaces
+  >>> from zope.interface.verify import verifyObject
+
+  >>> verifyObject(interfaces.IText, my_text)
+  True
+
+You can't set the text yourself:
+
+  >>> my_text.text = 'Hacked!'
+  Traceback (most recent call last):
+    ...
+  AttributeError: can't set attribute
+
+
+Raw format
+----------
+
+You can store you text as a raw format, and get the text around
+``<pre></pre>``:
+
+  >>> my_text.format = 'raw'
+  >>> my_text.raw = """I like:
+  ...
+  ... * Ice cream
+  ... * Vodka
+  ... * Strawberries"""
+  >>> print my_text.text
+  <pre>I like:
+  <BLANKLINE>
+  * Ice cream
+  * Vodka
+  * Strawberries</pre>
+
+And this is possible because of the ``raw`` text formatter:
+
+  >>> from zope.component import getUtility
+
+  >>> formatter = getUtility(interfaces.ITextFormat, name='raw')
+  >>> formatter
+  <zeam.utils.text.format.RawFormat object at ...>
+  >>> verifyObject(interfaces.ITextFormat, formatter)
+  True
+
+
+Restructured text format
+------------------------
+
+If you wish to become a more experienced user you can use restructured
+text:
+
+  >>> my_text.format = 'rest'
+  >>> my_text.raw = """I like:
+  ...
+  ... * Ice cream
+  ... * Vodka
+  ... * Strawberries"""
+  >>> print my_text.text
+  <p>I like:</p>
+  <ul class="simple">
+  <li>Ice cream</li>
+  <li>Vodka</li>
+  <li>Strawberries</li>
+  </ul>
+
+And all this advanced is possible because of the ``rest`` text formatter:
+
+  >>> formatter = getUtility(interfaces.ITextFormat, name='rest')
+  >>> formatter
+  <zeam.utils.text.format.RestFormat object at ...>
+  >>> verifyObject(interfaces.ITextFormat, formatter)
+  True
