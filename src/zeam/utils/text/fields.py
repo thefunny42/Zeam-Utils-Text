@@ -10,11 +10,12 @@ class Text(object):
     """
     interface.implements(IText)
 
-    def __init__(self):
-        self.__text = None
-        self.__raw = None
-
-    format = 'raw'
+    def __init__(self, text=None, format='raw'):
+        self.__text = u''
+        self.__raw = u''
+        self.format = format
+        if text is not None:
+            self.raw = text
 
     @apply
     def raw():

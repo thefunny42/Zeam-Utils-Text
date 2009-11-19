@@ -26,10 +26,11 @@ And we can create a content with some data:
 
   >>> class Comment(object):
   ...    interface.implements(IComment)
-  ...    text = Text()
+  ...    def __init__(self):
+  ...       self.text = Text()
 
   >>> content = Comment()
-
+  >>> content.text.raw = u'Hello world'
 
 Field
 -----
@@ -45,7 +46,7 @@ From that zope.schema field, you can get a field for your form:
 
 From the field you can get a list of available formats:
 
-  >>> formats = commentField.availableFormat()
+  >>> formats = commentField.availableFormats()
   >>> formats
   <zope.schema.vocabulary.SimpleVocabulary object at ...>
   >>> [(f.title, f.value) for f in formats]
@@ -71,4 +72,71 @@ You have an associated widget:
 
   >>> print commentWidget.render()
   <textarea id="form-field-text" name="form.field.text"
-            cols="80" rows="5">None</textarea>
+            cols="80" rows="5">Hello world</textarea>
+  <span>
+    <input type="radio" id="form-field-text-raw"
+           name="form.field.text.format" value="raw"
+           checked="checked" />
+    <label for="form-field-text-raw">Raw</label>
+  </span>
+  <span>
+    <input type="radio" id="form-field-text-rest"
+           name="form.field.text.format" value="rest" />
+    <label for="form-field-text-rest">Re-structured text</label>
+  </span>
+
+
+Widget Extractor
+----------------
+
+There is a special extractor to extract a value from the request:
+
+  >>> from zope import component
+  >>> from zeam.form.base import interfaces
+
+  >>> extractor = component.getMultiAdapter(
+  ...      (commentField, sub, request), interfaces.IWidgetExtractor)
+
+  >>> extractor
+  <zeam.utils.text.widgets.AdvancedTextWidgetExtractor object at ...>
+  >>> data = extractor.extract()
+  >>> data
+  (<Marker NO_VALUE>, None)
+
+But it can work  as well if you have some text in your request:
+
+  >>> textRequest = TestRequest(
+  ...         form={commentWidget.identifier: u'Hello world', })
+
+  >>> extractor = component.getMultiAdapter(
+  ...      (commentField, sub, textRequest), interfaces.IWidgetExtractor)
+
+  >>> data = extractor.extract()
+  >>> data
+  (<zeam.utils.text.fields.Text object at ...>, None)
+  >>> data[0].raw
+  u'Hello world'
+  >>> data[0].text
+  u'<pre>Hello world</pre>'
+
+
+Display widget
+--------------
+
+There is a display widget which can be used to display your text:
+
+  >>> from zeam.form.ztk import DISPLAY
+
+  >>> subDisplay = FormSubmission(content, request)
+  >>> subDisplay.ignoreContent = False
+  >>> subDisplay.mode = DISPLAY
+
+  >>> commentWidgets = Widgets(commentFields, form=subDisplay, request=request)
+  >>> commentWidgets.update()
+
+  >>> commentWidget = commentWidgets['form.field.text']
+  >>> commentWidget
+  <DisplayAdvancedTextFieldWidget Comment>
+
+  >>> print commentWidget.render()
+  <div><pre>Hello world</pre></div>

@@ -3,4 +3,18 @@
             tal:attributes="name widget/identifier;
                             id widget/htmlId"
             tal:content="widget/inputValue"></textarea>
+  <span tal:repeat="format widget/formats">
+    <tal:define tal:define="formatId string:${widget/htmlId}-${format/value}">
+      <input type="radio" id="#" name="#" value="#" checked="#"
+             tal:attributes="name widget/formatIdentifier;
+                             id formatId;
+                             value format/value;
+                             checked python:widget.isFormat(format.value)" />
+      <label for="#"
+             tal:attributes="for formatId"
+             tal:content="format/title">
+        Format
+      </label>
+    </tal:define>
+  </span>
 </tal:widget>

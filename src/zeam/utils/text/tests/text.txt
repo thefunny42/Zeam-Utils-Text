@@ -14,12 +14,29 @@ You can store some text in a Text object:
   >>> verifyObject(interfaces.IText, my_text)
   True
 
+By default you have no text, and the format is ``raw``:
+
+  >>> my_text.text
+  u''
+  >>> my_text.raw
+  u''
+  >>> my_text.format
+  'raw'
+
 You can't set the text yourself:
 
   >>> my_text.text = 'Hacked!'
   Traceback (most recent call last):
     ...
   AttributeError: can't set attribute
+
+Some test text:
+
+  >>> raw_text = """I like:
+  ...
+  ... * Ice cream
+  ... * Vodka
+  ... * Strawberries"""
 
 
 Raw format
@@ -29,17 +46,15 @@ You can store you text as a raw format, and get the text around
 ``<pre></pre>``:
 
   >>> my_text.format = 'raw'
-  >>> my_text.raw = """I like:
-  ...
-  ... * Ice cream
-  ... * Vodka
-  ... * Strawberries"""
+  >>> my_text.raw = raw_text
   >>> print my_text.text
   <pre>I like:
   <BLANKLINE>
   * Ice cream
   * Vodka
   * Strawberries</pre>
+  >>> my_text.raw == raw_text
+  True
 
 And this is possible because of the ``raw`` text formatter:
 
@@ -59,11 +74,7 @@ If you wish to become a more experienced user you can use restructured
 text:
 
   >>> my_text.format = 'rest'
-  >>> my_text.raw = """I like:
-  ...
-  ... * Ice cream
-  ... * Vodka
-  ... * Strawberries"""
+  >>> my_text.raw = raw_text
   >>> print my_text.text
   <p>I like:</p>
   <ul class="simple">
@@ -71,6 +82,8 @@ text:
   <li>Vodka</li>
   <li>Strawberries</li>
   </ul>
+  >>> my_text.raw == raw_text
+  True
 
 And all this advanced is possible because of the ``rest`` text formatter:
 
