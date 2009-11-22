@@ -73,6 +73,7 @@ You have an associated widget:
   >>> print commentWidget.render()
   <textarea id="form-field-text" name="form.field.text"
             cols="80" rows="5">Hello world</textarea>
+  <br />
   <span>
     <input type="radio" id="form-field-text-raw"
            name="form.field.text.format" value="raw"
