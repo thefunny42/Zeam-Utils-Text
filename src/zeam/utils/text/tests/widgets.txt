@@ -115,10 +115,32 @@ But it can work  as well if you have some text in your request:
   >>> data = extractor.extract()
   >>> data
   (<zeam.utils.text.fields.Text object at ...>, None)
+  >>> data[0].format
+  'raw'
   >>> data[0].raw
   u'Hello world'
   >>> data[0].text
   u'<pre>Hello world</pre>'
+
+
+And you can include a format in your request:
+
+  >>> textRequest = TestRequest(
+  ...         form={commentWidget.identifier: u'Hello world',
+  ...               commentWidget.identifier + '.format': u'rest', })
+
+  >>> extractor = component.getMultiAdapter(
+  ...      (commentField, sub, textRequest), interfaces.IWidgetExtractor)
+
+  >>> data = extractor.extract()
+  >>> data
+  (<zeam.utils.text.fields.Text object at ...>, None)
+  >>> data[0].format
+  'rest'
+  >>> data[0].raw
+  u'Hello world'
+  >>> data[0].text
+  u'<p>Hello world</p>\n'
 
 
 Display widget

@@ -18,6 +18,14 @@ class Text(object):
             self.raw = text
 
     @apply
+    def format():
+        def get(self):
+            return self.__format
+        def set(self, value):
+            self.__format = str(value)
+        return property(get, set)
+
+    @apply
     def raw():
         def get(self):
             return self.__raw
